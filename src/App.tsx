@@ -20,79 +20,10 @@ import {
     SelectValue
 } from "@/components/ui/select.tsx";
 import {useToast} from "@/components/ui/use-toast";
-import {useFetchStackExchangeAPITagsStore, useStackOverflowTagsStore} from "@/store/store.ts";
 import {StackOverflowTagsResponse} from "@/types/stackExchangeTypes.ts";
 import ky from "ky";
 
 function App() {
-
-    // const [currentPage, setCurrentPage] = useState(1)
-    // const [itemsPerPage, setItemsPerPage] = useState(10)
-    // const [sortBy, setSortBy] = useState('popular')
-    // const [orderBy, setOrderBy] = useState('desc')
-    // const [isNextPage, setIsNextPage] = useState(true)
-    //
-    // const [data, setData] = useState<StackOverflowTagsResponse | undefined>();
-    // const [isLoading, setIsLoading] = useState<boolean>(false);
-    // const [error, setError] = useState<string | null>(null);
-    //
-    // const getData = useCallback(async () => {
-    //     try {
-    //         setError(null)
-    //         setIsLoading(true)
-    //         const data = await ky.get(`https://api.stackexchange.com/2.3/tags?page=${currentPage}&pagesize=${itemsPerPage}&order=${orderBy}&sort=${sortBy}&site=stackoverflow`).json() as StackOverflowTagsResponse
-    //         setData(data)
-    //         setIsNextPage(data.has_more)
-    //     } catch (e: any) {
-    //         setError(e)
-    //     } finally {
-    //         setIsLoading(false)
-    //     }
-    // }, [currentPage, itemsPerPage, orderBy, sortBy])
-    //
-    // useEffect(() => {
-    //     getData()
-    // }, [getData])
-
-    // const {
-    //     data,
-    //     isLoading,
-    //     orderBy,
-    //     sortBy,
-    //     itemsPerPage,
-    //     currentPage,
-    //     isNextPage,
-    //     error,
-    //     fetchTagsData,
-    //     // setIsLoading,
-    //     // setError,
-    //     setCurrentPage,
-    //     // setIsNextPage,
-    //     setItemsPerPage,
-    //     setOrderBy,
-    //     setSortBy
-    // } = useFetchStackExchangeAPITagsStore((state) => ({
-    //     data: state.data,
-    //     isLoading: state.isLoading,
-    //     orderBy: state.orderBy,
-    //     sortBy: state.sortBy,
-    //     itemsPerPage: state.itemsPerPage,
-    //     currentPage: state.currentPage,
-    //     isNextPage: state.isNextPage,
-    //     error: state.error,
-    //     fetchTagsData: state.fetchTagsData,
-    //     // setIsLoading: state.setIsLoading,
-    //     // setError: state.setError,
-    //     setCurrentPage: state.setCurrentPage,
-    //     // setIsNextPage: state.setIsNextPage,
-    //     setItemsPerPage: state.setItemsPerPage,
-    //     setOrderBy: state.setOrderBy,
-    //     setSortBy: state.setSortBy
-    // }))
-
-    // useEffect(() => {
-    //     fetchTagsData()
-    // }, [fetchTagsData])
 
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage, setItemsPerPage] = useState(10)
@@ -100,10 +31,8 @@ function App() {
     const [orderBy, setOrderBy] = useState('desc')
     const [isNextPage, setIsNextPage] = useState(true)
 
-    const { data, setData } = useStackOverflowTagsStore((state) => ({
-        data: state.data,
-        setData: state.setData
-    }))
+    const [data, setData] = useState<StackOverflowTagsResponse | undefined>(undefined)
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
