@@ -38,7 +38,7 @@ export default function useFetchTags(props: UseFetchTagsProps): UseFetchTagsResp
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleFetchTags = useCallback(async () => {
+    const handleFetchTags = useCallback(async (currentPage, numOfElementsPerPage) => {
         setIsLoading(true);
         setError(null);
 
@@ -52,8 +52,8 @@ export default function useFetchTags(props: UseFetchTagsProps): UseFetchTagsResp
             order: memoizedConfig.order,
             sort: memoizedConfig.sortByType,
             site: memoizedConfig.websiteName,
-            page: memoizedPagination.currentPage?.toString(),
-            pagesize: memoizedPagination.numOfElementsPerPage?.toString(),
+            page: currentPage.toString(),
+            pagesize: numOfElementsPerPage.toString(),
         }).forEach(([key, value]) => {
             if (value !== undefined) paramsObj[key] = value;
         });
@@ -66,7 +66,7 @@ export default function useFetchTags(props: UseFetchTagsProps): UseFetchTagsResp
                 throw new Error(`API returned status ${response.status}`);
             }
             const responseData = await response.json();
-            setData(responseData.items);
+            setData(responseData);
         } catch (error: any) {
             setError(error.message || 'There was an error fetching tags');
         } finally {
@@ -75,8 +75,8 @@ export default function useFetchTags(props: UseFetchTagsProps): UseFetchTagsResp
     }, [memoizedQueryParams, memoizedConfig, memoizedPagination]);
 
     useEffect(() => {
-        handleFetchTags();
+        handleFetchTags(1, 10);
     }, [handleFetchTags]);
 
-    return { data, isLoading, error, refetch: handleFetchTags };
+    return { data, isLoading, error, refetch: handleFetchTags(1, 10) };
 }
