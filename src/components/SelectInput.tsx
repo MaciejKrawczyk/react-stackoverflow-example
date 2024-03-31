@@ -10,16 +10,21 @@ import {
 } from "@/components/ui/select.tsx";
 
 type SelectInput = {
-    label: string
-    itemsList: string[],
-    onValueChange: (value: string) => void
-    defaultChosenValue: string
+    label: string;
+    itemsList: string[];
+    onValueChange?: (value: string) => void;
+    defaultChosenValue: string;
 }
 
 const SelectInput: FC<SelectInput> = ({label, itemsList, onValueChange, defaultChosenValue}) => {
+    const handleChange = (value: string) => {
+        if (onValueChange) {
+            onValueChange(value);
+        }
+    };
 
     return (
-        <Select onValueChange={(e) => onValueChange(e)}>
+        <Select onValueChange={handleChange}>
             <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder={defaultChosenValue}/>
             </SelectTrigger>
@@ -33,7 +38,6 @@ const SelectInput: FC<SelectInput> = ({label, itemsList, onValueChange, defaultC
             </SelectContent>
         </Select>
     )
-
 }
 
-export default SelectInput
+export default SelectInput;

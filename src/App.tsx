@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {Input} from "@/components/ui/input.tsx";
-import {toast, useToast} from "@/components/ui/use-toast";
+import {useToast} from "@/components/ui/use-toast";
 import {useFetchStackExchangeAPITagsStore} from "@/store/store.ts";
 import Paginator from "@/components/Paginator.tsx";
 import TagsTableWithLoadingState from "@/components/TagsTableWithLoadingState.tsx";
@@ -53,9 +53,13 @@ function App() {
         })
     }
 
-    if (error) return (
-        <h2 className={'text-2xl text-red-600 font-bold'}>{error}</h2>
-    )
+    if (error) {
+        return (
+            <Container>
+                <h2 className={'text-2xl text-red-600 font-bold'}>{error}</h2>
+            </Container>
+        )
+    }
 
     return (
         <Container>
@@ -75,23 +79,19 @@ function App() {
                         onChange={e => setItemsPerPage(Number(e.target.value))}
                     />
                 </div>
-
                 <div className={'flex w-full gap-1 mr-3'}>
-
                     <SelectInput
                         itemsList={['popular', 'activity', 'name']}
                         label={'sort by...'}
                         onValueChange={setSortBy as (value: string) => void}
                         defaultChosenValue={sortBy}
                     />
-
                     <SelectInput
                         itemsList={['desc', 'asc']}
                         label={'order by...'}
                         onValueChange={setOrderBy as (value: string) => void}
                         defaultChosenValue={orderBy}
                     />
-
                 </div>
             </div>
 
@@ -99,12 +99,13 @@ function App() {
                 isLoading={isLoading}
                 data={data}
                 onRowClick={onRowClick}
-                defaultItemsPerPage={itemsPerPage}/>
+                defaultItemsPerPage={itemsPerPage}
+            />
 
             <Paginator
-                currentPage={currentPage}
+                initialPage={currentPage}
                 isNextPage={isNextPage}
-                setCurrentPage={setCurrentPage}
+                onPageChange={setCurrentPage}
             />
 
         </Container>

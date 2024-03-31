@@ -1,3 +1,4 @@
+import { FC, useState } from 'react';
 import {
     Pagination,
     PaginationContent,
@@ -6,33 +7,36 @@ import {
     PaginationNext,
     PaginationPrevious
 } from "@/components/ui/pagination.tsx";
-import {FC} from "react";
 
 type PaginationProps = {
-    currentPage: number
-    isNextPage: boolean
-    setCurrentPage: (currentPage: number) => void,
+    initialPage: number;
+    isNextPage: boolean;
+    onPageChange?: (newPage: number) => void;
 }
 
-const Paginator: FC<PaginationProps> = ({currentPage, isNextPage, setCurrentPage}) => {
+const Paginator: FC<PaginationProps> = ({initialPage, isNextPage, onPageChange}) => {
+    const [currentPage, setCurrentPage] = useState(initialPage);
 
-
+    const handlePageChange = (newPage: number) => {
+        setCurrentPage(newPage);
+        onPageChange?.(newPage);
+    };
 
     return (
         <Pagination>
             <PaginationContent>
                 {currentPage > 1 && (
                     <PaginationItem
-                        className={'cursor-pointer'}
+                        className="cursor-pointer"
                         tabIndex={0}
                         onClick={(e) => {
                             e.preventDefault();
-                            setCurrentPage(currentPage - 1);
+                            handlePageChange(currentPage - 1);
                         }}
                         onKeyUp={(e) => {
                             if (e.key === 'Enter') {
                                 e.preventDefault();
-                                setCurrentPage(currentPage - 1);
+                                handlePageChange(currentPage - 1);
                             }
                         }}
                     >
@@ -42,16 +46,16 @@ const Paginator: FC<PaginationProps> = ({currentPage, isNextPage, setCurrentPage
 
                 {currentPage > 1 && (
                     <PaginationItem
-                        className={'cursor-pointer'}
+                        className="cursor-pointer"
                         tabIndex={0}
                         onClick={(e) => {
                             e.preventDefault();
-                            setCurrentPage(currentPage - 1);
+                            handlePageChange(currentPage - 1);
                         }}
                         onKeyUp={(e) => {
                             if (e.key === 'Enter') {
                                 e.preventDefault();
-                                setCurrentPage(currentPage - 1);
+                                handlePageChange(currentPage - 1);
                             }
                         }}
                     >
@@ -61,12 +65,7 @@ const Paginator: FC<PaginationProps> = ({currentPage, isNextPage, setCurrentPage
                     </PaginationItem>
                 )}
 
-                <PaginationItem
-                    tabIndex={0}
-                    onClick={(e) => {
-                        e.preventDefault();
-                    }}
-                >
+                <PaginationItem tabIndex={0}>
                     <PaginationLink isActive>
                         {currentPage}
                     </PaginationLink>
@@ -74,16 +73,16 @@ const Paginator: FC<PaginationProps> = ({currentPage, isNextPage, setCurrentPage
 
                 {isNextPage && (
                     <PaginationItem
-                        className={'cursor-pointer'}
+                        className="cursor-pointer"
                         tabIndex={0}
                         onClick={(e) => {
                             e.preventDefault();
-                            setCurrentPage(currentPage + 1);
+                            handlePageChange(currentPage + 1);
                         }}
                         onKeyUp={(e) => {
                             if (e.key === 'Enter') {
                                 e.preventDefault();
-                                setCurrentPage(currentPage + 1);
+                                handlePageChange(currentPage + 1);
                             }
                         }}
                     >
@@ -95,16 +94,16 @@ const Paginator: FC<PaginationProps> = ({currentPage, isNextPage, setCurrentPage
 
                 {isNextPage && (
                     <PaginationItem
-                        className={'cursor-pointer'}
+                        className="cursor-pointer"
                         tabIndex={0}
                         onClick={(e) => {
                             e.preventDefault();
-                            setCurrentPage(currentPage + 1);
+                            handlePageChange(currentPage + 1);
                         }}
                         onKeyUp={(e) => {
                             if (e.key === 'Enter') {
                                 e.preventDefault();
-                                setCurrentPage(currentPage + 1);
+                                handlePageChange(currentPage + 1);
                             }
                         }}
                     >
@@ -113,8 +112,7 @@ const Paginator: FC<PaginationProps> = ({currentPage, isNextPage, setCurrentPage
                 )}
             </PaginationContent>
         </Pagination>
-    )
+    );
+};
 
-}
-
-export default Paginator
+export default Paginator;

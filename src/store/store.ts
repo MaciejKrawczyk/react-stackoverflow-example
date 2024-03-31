@@ -1,5 +1,7 @@
 import {create} from 'zustand'
 import {StackOverflowTagsResponse} from "@/types/stackExchangeTypes.ts";
+import ky from "ky";
+import {toast} from "@/components/ui/use-toast.ts";
 
 type FetchStackExchangeAPITagsStore = {
     data: StackOverflowTagsResponse
@@ -38,12 +40,15 @@ export const useFetchStackExchangeAPITagsStore = create<FetchStackExchangeAPITag
         try {
             set(() => ({error: null}))
             set(() => ({isLoading: true}))
-            const response = await fetch(`https://api.stackexchange.com/2.3/tags?page=${get().currentPage}&pagesize=${get().itemsPerPage}&order=${get().orderBy}&sort=${get().sortBy}&site=stackoverflow`)
-            const data = await response.json() as StackOverflowTagsResponse
+            const data = await ky(`https://api.stackexchange.com/2.3/tags?page=${get().currentPage}&pagesize=${get().itemsPerPage}&order=${get().orderBy}&sort=${get().sortBy}&site=stackoverflow`).json() as StackOverflowTagsResponse
             set(() => ({isNextPage: data.has_more}))
             set(() => ({data: data}))
-        } catch (e: any) {
-            set(() => ({error: e.message}))
+        } catch (e) {
+            toast({
+                title: 'Error',
+                description: "an error has occurred"
+            })
+            if (e instanceof Error) set(() => ({error: e.message}))
         } finally {
             set(() => ({isLoading: false}))
         }
